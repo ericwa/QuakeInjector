@@ -815,6 +815,15 @@ public class QuakeInjector extends JFrame {
 
 
 	public static void main(String[] args) {
+		// Use Mac OS menu bar
+		if (QuakeInjector.isMacOSX()) {
+			try {
+				System.setProperty("apple.laf.useScreenMenuBar", "true");
+			}
+			catch (SecurityException e) {
+			}
+		}
+
 		try {
         // Set System L&F
 			javax.swing.UIManager.setLookAndFeel(
@@ -906,5 +915,8 @@ public class QuakeInjector extends JFrame {
 			}
 			return icons;
 	}
-	
+
+	public static boolean isMacOSX() {
+		return System.getProperty("os.name").startsWith("Mac OS X");
+	}
 }
