@@ -204,6 +204,15 @@ public final class BuildCommit {
        <fileset dir="${quakeinjector.dist}" />
      </zip>
 
+     <taskdef name="jarbundler" classname="net.sourceforge.jarbundler.JarBundler" classpath="${basedir}/antlib/jarbundler-2.2.0.jar"/>
+     <jarbundler dir="${quakeinjector.release}"
+                 name="Quake Injector"
+                 mainclass="${quakeinjector.main-class}"
+                 icon="${quakeinjector.res}/Inject2.icns">
+       <jarfileset dir="${quakeinjector.dist}/">
+         <include name="**/*.jar" />
+       </jarfileset>
+     </jarbundler>
   </target>
 
   <target name="javadoc" 
@@ -220,5 +229,4 @@ public final class BuildCommit {
 	  <link href="http://java.sun.com/javase/6/docs/api/" />
 	</javadoc>
   </target> 
-
 </project>
