@@ -54,7 +54,7 @@ public class Configuration {
 	public final EngineExecutable EngineExecutable = new EngineExecutable();
 
 	public class LocalDatabaseFile extends FileValue {
-		private LocalDatabaseFile() { super("localDatabaseFile", new File("database.xml")); }
+		private LocalDatabaseFile() { super("localDatabaseFile", new File(QuakeInjector.appDataDirectory(), "database.xml")); }
 	}
 	public final LocalDatabaseFile LocalDatabaseFile = new LocalDatabaseFile();
 	

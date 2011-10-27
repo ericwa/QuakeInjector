@@ -84,12 +84,12 @@ public class QuakeInjector extends JFrame {
 	private static final int minHeight = 300;
 
 	private final static String installedMapsFileName = "installedMaps.xml";
-	private final static File installedMapsFile = new File(installedMapsFileName);
+	private final static File installedMapsFile = new File(appDataDirectory(), installedMapsFileName);
 	private final SaveInstalled saveInstalled = new SaveInstalled(installedMapsFile);
 	
 	private final static String zipFilesXml = "zipFiles.xml";
 
-	final static File configFile = new File("config.properties");
+	final static File configFile = new File(appDataDirectory(), "config.properties");
 
 
 
@@ -420,7 +420,7 @@ public class QuakeInjector extends JFrame {
 	private Future<List<PackageFileList>> checkForInstalledMaps() {
 		final File enginePath = getConfig().EnginePath.get();
 
-		final File file = new File(zipFilesXml);
+		final File file = new File(appDataDirectory(), zipFilesXml);
 
 		final CheckInstalled checker
 		    = new CheckInstalled(this,
@@ -918,5 +918,31 @@ public class QuakeInjector extends JFrame {
 
 	public static boolean isMacOSX() {
 		return System.getProperty("os.name").startsWith("Mac OS X");
+	}
+
+	public static boolean isWindows() {
+		return System.getProperty("os.name").startsWith("Windows");
+	}
+
+	public static File appDataDirectory() {
+		// It's rediculous that Java doesn't provide this.
+		String path;
+		if (isMacOSX()) {
+			path = System.getProperty("user.home") + "/Library/Application Support/" + applicationName;
+		} else if (isWindows()) {
+			path = System.getenv("APPDATA") + File.separator + applicationName;
+		} else { // For *nix-like and other systmes, store in ~/.quakeinjector
+			path = System.getProperty("user.home") + File.separator + ".quakeinjector";
+		}
+		
+		File dir = new File(path);
+		try {
+			if (!dir.exists()) {
+				dir.mkdirs();
+			}
+		} catch (SecurityException e) {
+			System.err.println("WARNING: Couldn't create app data directory " + path);
+		}
+		return dir;
 	}
 }
