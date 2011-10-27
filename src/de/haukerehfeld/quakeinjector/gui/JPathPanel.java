@@ -19,6 +19,9 @@ along with QuakeInjector.  If not, see <http://www.gnu.org/licenses/>.
 */
 package de.haukerehfeld.quakeinjector.gui;
 
+import java.awt.Component;
+import java.awt.Frame;
+import java.awt.FileDialog;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
@@ -31,14 +34,17 @@ import javax.swing.JComponent;
 import javax.swing.JFileChooser;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JFrame;
 import javax.swing.JTextField;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
+import javax.swing.SwingUtilities;
 
 import de.haukerehfeld.quakeinjector.ChangeListenerList;
 import de.haukerehfeld.quakeinjector.RelativePath;
 import de.haukerehfeld.quakeinjector.Utils;
+import de.haukerehfeld.quakeinjector.QuakeInjector;
 
 /**
  * A Panel to input paths
@@ -58,6 +64,83 @@ public class JPathPanel extends JPanel {
 
 
 	private final Verifier check;
+
+	/**
+	 * JFileChooser sucks on Mac OS, so use java.awt.FileDialog.
+	 * FXIME: This shouldn't be a subclass of JFileChooser!
+	 */
+	private class MacFileChooser extends JFileChooser {
+		private FileDialog fileDialog;
+		private int filesAndOrDirectories;
+		private File defaultPath;
+
+		public MacFileChooser(File defaultPath, int mode) {
+			this.filesAndOrDirectories = mode;
+			this.defaultPath = defaultPath;
+		}
+	
+		// FIXME: This shouldn't be needed
+		private Frame getComponentFrame(Component component) {
+   			if (component == null) {
+				return null;
+			} else if (component instanceof Frame) {
+				return (Frame)component;
+			} else {
+    				return getComponentFrame(SwingUtilities.windowForComponent(component));
+			}
+		}
+
+		/**
+		 * show on top of the given frame
+		 */
+		public int showOpenDialog(Component parent) {
+			System.out.println("Showing custom chooser.");
+
+			{
+				String value = (this.filesAndOrDirectories == JFileChooser.DIRECTORIES_ONLY) ? "true" : "false";
+				System.setProperty("apple.awt.fileDialogForDirectories", value);
+			}
+
+			Frame frame = getComponentFrame(parent);
+
+			this.fileDialog = new FileDialog(frame);
+			this.fileDialog.setDirectory(this.defaultPath.getAbsolutePath());
+			this.fileDialog.setVisible(true);
+
+			//System.out.println("chose file " + this.fileDialog.getFile() + " dir: " + this.fileDialog.getDirectory());
+
+			if (this.fileDialog.getFile() == null) {
+				return JFileChooser.CANCEL_OPTION;
+			} else {
+				return JFileChooser.APPROVE_OPTION;
+			}
+		}
+	
+		public File getSelectedFile() {
+			if (this.fileDialog != null) {
+				return new File(new File(this.fileDialog.getDirectory()), this.fileDialog.getFile());
+			} else {
+				return null;
+			}
+		}
+		
+		public void setCurrentDirectory(File dir) {
+			this.defaultPath = dir;
+			if (this.fileDialog != null) {
+				this.fileDialog.setDirectory(this.defaultPath.getAbsolutePath());
+			}
+		}
+	}
+
+	private JFileChooser createFileChooser(File defaultPath, int mode) {
+		if (QuakeInjector.isMacOSX()) {
+			return new MacFileChooser(defaultPath, mode);
+		} else {
+			JFileChooser chooser = new JFileChooser(defaultPath);
+			chooser.setFileSelectionMode(mode);
+			return chooser;
+		}
+	}
 
 	/**
 	 * If the saved path is absolute although we have a basepath - happens on windows when the basepath is
@@ -108,8 +191,7 @@ public class JPathPanel extends JPanel {
 		this.errorLabel = new JLabel();
 		add(errorLabel);
 
-		this.chooser = new JFileChooser(getPath());
-		chooser.setFileSelectionMode(filesAndOrDirectories);
+		this.chooser = createFileChooser(getPath(), filesAndOrDirectories);
 		
 		this.fileChooserButton = new JButton("Select");
         fileChooserButton.addActionListener(new ActionListener() {
@@ -174,6 +256,7 @@ public class JPathPanel extends JPanel {
 	}
 	
 	public void setPath(File path) {
+		System.out.println("set to " + path.getAbsolutePath());
 		String pathString;
 		if (basePath != null) {
 			File relative = RelativePath.getRelativePath(basePath, path);
@@ -234,6 +317,7 @@ public class JPathPanel extends JPanel {
 	 * Hack: Because i can't call verify() from the inner class that has @Override verify(Stuff s);
 	 */
 	private boolean verify_() {
+		System.out.println("verify called");
 		return verify();
 	}
 	

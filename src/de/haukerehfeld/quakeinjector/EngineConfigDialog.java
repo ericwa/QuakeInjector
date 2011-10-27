@@ -20,6 +20,7 @@ along with QuakeInjector.  If not, see <http://www.gnu.org/licenses/>.
 package de.haukerehfeld.quakeinjector;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
@@ -66,6 +67,7 @@ public class EngineConfigDialog extends JDialog {
 	private final JCheckBox rogue;
 	private final JCheckBox hipnotic;
 	
+	private static final Color CLEAR = new Color(0, 0, 0, 0);
 	
 	public EngineConfigDialog(final JFrame frame,
 							  Configuration.EnginePath enginePathDefault,
@@ -79,6 +81,8 @@ public class EngineConfigDialog extends JDialog {
 		JPanel configPanel = new JPanel();
 		configPanel.setBorder(LookAndFeelDefaults.PADDINGBORDER);
 		configPanel.setLayout(new GridBagLayout());
+		configPanel.setBackground(CLEAR);
+		configPanel.setOpaque(false);
 
 		JLabel description = new JLabel("Configure engine specific settings");
 		description.setLabelFor(this);
@@ -148,22 +152,40 @@ public class EngineConfigDialog extends JDialog {
 		engineExecutable = new JPathPanel(
 			new JPathPanel.Verifier() {
 				public boolean verify(File exe) {
-					return (exe.exists()
-							&& !exe.isDirectory()
+					if (QuakeInjector.isMacOSX()) {
+						return (exe.exists()
+							&& exe.isDirectory()
 							&& exe.canRead()
-							&& exe.canExecute());
+							&& exe.getName().endsWith(".app"));
+					} else {
+						return (exe.exists()
+								&& !exe.isDirectory()
+								&& exe.canRead()
+								&& exe.canExecute());
+					}
 				}
 				public String errorMessage(File f) {
-					if (!f.exists()) {
-						return "Doesn't exist!";
+					if (QuakeInjector.isMacOSX()) {
+						if (!f.exists()) {
+							return "Doesn't exist!";
+						}
+						else if (!f.isDirectory() || !f.getName().endsWith(".app")) {
+							return "Must be an app bundle!";
+						}
+						return null;
+						
+					} else {
+						if (!f.exists()) {
+							return "Doesn't exist!";
+						}
+						else if (f.isDirectory()) {
+							return "Must be an executable file!";
+						}
+						else if (!f.canExecute()) {
+							return "Cannot be executed!";
+						}
+						return null;
 					}
-					else if (f.isDirectory()) {
-						return "Must be an executable file!";
-					}
-					else if (!f.canExecute()) {
-						return "Cannot be executed!";
-					}
-					return null;
 				}
 			},
 			engineExeDefault.get(),

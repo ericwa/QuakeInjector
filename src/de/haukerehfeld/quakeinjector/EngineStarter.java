@@ -21,6 +21,7 @@ package de.haukerehfeld.quakeinjector;
 
 import java.io.File;
 import java.util.ArrayList;
+import de.haukerehfeld.quakeinjector.QuakeInjector;
 
 public class EngineStarter {
 	private File quakeDir;
@@ -30,6 +31,17 @@ public class EngineStarter {
 	public EngineStarter(File quakeDir, File quakeExe, Configuration.EngineCommandLine quakeCmdline) {
 		this.quakeDir = quakeDir;
 		this.quakeExe = quakeExe;
+        
+        // FIXME: Mac OS Hack
+        if (QuakeInjector.isMacOSX() && quakeExe.getName().endsWith(".app")) {
+			String bundleName = quakeExe.getName();
+			String appName = bundleName.substring(0, bundleName.length() - 4);
+			this.quakeExe = new File(new File(new File(quakeExe, "Contents"), "MacOS"), appName);
+			System.out.println("Using " + this.quakeExe + " as full path to Quake executable");
+        } else {
+			this.quakeExe = quakeExe;
+		}
+        
 		this.quakeCmdline = quakeCmdline.get();
 	}
 
