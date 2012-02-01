@@ -104,7 +104,12 @@ public class JPathPanel extends JPanel {
 			Frame frame = getComponentFrame(parent);
 
 			this.fileDialog = new FileDialog(frame);
-			this.fileDialog.setDirectory(this.defaultPath.getAbsolutePath());
+			if (this.defaultPath != null)
+			{
+				String dir = this.defaultPath.getParent();
+				
+				this.fileDialog.setDirectory(dir);
+			}
 			this.fileDialog.setVisible(true);
 
 			//System.out.println("chose file " + this.fileDialog.getFile() + " dir: " + this.fileDialog.getDirectory());
