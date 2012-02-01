@@ -52,6 +52,7 @@ import de.haukerehfeld.quakeinjector.gui.ErrorListener;
 import de.haukerehfeld.quakeinjector.gui.JPathPanel;
 import de.haukerehfeld.quakeinjector.gui.LookAndFeelDefaults;
 import de.haukerehfeld.quakeinjector.gui.OkayCancelApplyPanel;
+import de.haukerehfeld.quakeinjector.Application;
 
 public class EngineConfigDialog extends JDialog {
 	private final static String windowTitle = "Engine Configuration";
@@ -152,39 +153,15 @@ public class EngineConfigDialog extends JDialog {
 		engineExecutable = new JPathPanel(
 			new JPathPanel.Verifier() {
 				public boolean verify(File exe) {
-					if (QuakeInjector.isMacOSX()) {
-						return (exe.exists()
-							&& exe.isDirectory()
-							&& exe.canRead()
-							&& exe.getName().endsWith(".app"));
-					} else {
-						return (exe.exists()
-								&& !exe.isDirectory()
-								&& exe.canRead()
-								&& exe.canExecute());
-					}
+					return Application.isValidApplication(exe);
 				}
 				public String errorMessage(File f) {
-					if (QuakeInjector.isMacOSX()) {
-						if (!f.exists()) {
-							return "Doesn't exist!";
-						}
-						else if (!f.isDirectory() || !f.getName().endsWith(".app")) {
-							return "Must be an app bundle!";
-						}
+					if (this.verify(f))
+					{
 						return null;
-						
-					} else {
-						if (!f.exists()) {
-							return "Doesn't exist!";
-						}
-						else if (f.isDirectory()) {
-							return "Must be an executable file!";
-						}
-						else if (!f.canExecute()) {
-							return "Cannot be executed!";
-						}
-						return null;
+					}
+					else {
+						return "Invalid application";
 					}
 				}
 			},
@@ -350,7 +327,7 @@ public class EngineConfigDialog extends JDialog {
 		return enginePath.getPath();
 	}
 	public File getEngineExecutable() {
-		return engineExecutable.getPath();
+		return Application.applicationExecutable(engineExecutable.getPath());
 	}
 	public String getCommandline() {
 		return engineCommandline.getText();
