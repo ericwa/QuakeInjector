@@ -327,7 +327,7 @@ public class EngineConfigDialog extends JDialog {
 		return enginePath.getPath();
 	}
 	public File getEngineExecutable() {
-		return Application.applicationExecutable(engineExecutable.getPath());
+		return engineExecutable.getPath();
 	}
 	public String getCommandline() {
 		return engineCommandline.getText();
