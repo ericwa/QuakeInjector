@@ -21,7 +21,7 @@ package de.haukerehfeld.quakeinjector;
 
 import java.io.File;
 import java.util.ArrayList;
-import de.haukerehfeld.quakeinjector.QuakeInjector;
+import de.haukerehfeld.quakeinjector.Application;
 
 public class EngineStarter {
 	private File quakeDir;
@@ -31,24 +31,15 @@ public class EngineStarter {
 	public EngineStarter(File quakeDir, File quakeExe, Configuration.EngineCommandLine quakeCmdline) {
 		this.quakeDir = quakeDir;
 		this.quakeExe = quakeExe;
-        
-        // FIXME: Mac OS Hack
-        if (QuakeInjector.isMacOSX() && quakeExe.getName().endsWith(".app")) {
-			String bundleName = quakeExe.getName();
-			String appName = bundleName.substring(0, bundleName.length() - 4);
-			this.quakeExe = new File(new File(new File(quakeExe, "Contents"), "MacOS"), appName);
-			System.out.println("Using " + this.quakeExe + " as full path to Quake executable");
-        } else {
-			this.quakeExe = quakeExe;
-		}
-        
 		this.quakeCmdline = quakeCmdline.get();
 	}
 
 	public Process start(String mapCmdline, String startmap) throws java.io.IOException {
 		ArrayList<String> cmd = new ArrayList<String>(5);
 
-		cmd.add(quakeExe.getAbsolutePath());
+		File actualExe = Application.applicationExecutable(quakeExe);
+		
+		cmd.add(actualExe.getAbsolutePath());
 		//processbuilder doesn't like arguments with spaces
 		if (quakeCmdline != null) {
 			for (String s: quakeCmdline.split(" ")) { cmd.add(s); }
@@ -82,9 +73,6 @@ public class EngineStarter {
 	}
 
 	public boolean checkPaths() {
-		return (quakeExe.exists()
-		        && !quakeExe.isDirectory()
-		        && quakeExe.canRead()
-		        && quakeExe.canExecute());
+		return Application.isValidApplication(quakeExe);
 	}
 }
