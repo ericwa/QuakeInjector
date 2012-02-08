@@ -22,7 +22,7 @@ package de.haukerehfeld.quakeinjector;
 //import java.awt.*;
 import java.util.List;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 
 public class UpdateRequirementListWorker extends SwingWorker<Void, Void> {
 	private final RequirementList requirementList;
@@ -41,7 +41,7 @@ public class UpdateRequirementListWorker extends SwingWorker<Void, Void> {
 		this.installedGetter = installed;
 	}
 	
-	@Override
+	
 	public Void doInBackground() {
 		try {
 			
@@ -61,7 +61,7 @@ public class UpdateRequirementListWorker extends SwingWorker<Void, Void> {
 	}
 
 
-	@Override
+	
 	public void done() {
 		synchronized (requirementList) {
 			requirementList.setRequirements(requirement);

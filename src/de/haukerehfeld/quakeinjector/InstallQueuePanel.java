@@ -27,7 +27,7 @@ import javax.swing.Box;
 import java.awt.event.ActionListener;
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
-import java.util.ArrayDeque;
+import java.util.LinkedList;
 import java.util.Queue;
 
 import javax.swing.JButton;
@@ -49,7 +49,7 @@ public class InstallQueuePanel extends JPanel implements Scrollable {
 
 	private GridBagLayout layout = new GridBagLayout();
 	
-	private Queue<Job> jobs = new ArrayDeque<Job>();
+	private Queue<Job> jobs = new LinkedList<Job>();
 	
 	public InstallQueuePanel() {
 		setLayout(layout);
@@ -98,28 +98,23 @@ public class InstallQueuePanel extends JPanel implements Scrollable {
 		layoutComponents();
 	}
 
-	@Override
 	public Dimension getPreferredScrollableViewportSize() {
 		return getPreferredSize();
 	}
 
-	@Override
 	public int getScrollableUnitIncrement(Rectangle visibleRect,
 	                                      int orientation,
 	                                      int direction) {
 		return rowHeight;
 	}
 
-	@Override
 	public int getScrollableBlockIncrement(Rectangle visibleRect,
 	                                       int orientation,
 	                                       int direction) {
 		return rowHeight;
 	}
 
-	@Override
 	public boolean getScrollableTracksViewportWidth() { return true; }
-	@Override
 	public boolean getScrollableTracksViewportHeight() { return false; }
 
 	private class RowConstraints extends GridBagConstraints {{

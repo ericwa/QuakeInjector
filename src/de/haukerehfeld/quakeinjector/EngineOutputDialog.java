@@ -60,7 +60,7 @@ import javax.swing.JTextArea;
 import java.io.InputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 
 import java.awt.Rectangle;
 
@@ -96,7 +96,7 @@ public class EngineOutputDialog extends JDialog {
 
 
 		new SwingWorker<Void,Void>() {
-			@Override
+			
 			public Void doInBackground() {
 				try {
 					InputStreamReader in = new  InputStreamReader(engineOut);
@@ -133,7 +133,7 @@ public class EngineOutputDialog extends JDialog {
 
 				return null;
 			}
-			@Override
+			
 			public void done() {
 			}
 		}.execute();

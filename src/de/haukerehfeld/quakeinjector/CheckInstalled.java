@@ -1,6 +1,6 @@
 package de.haukerehfeld.quakeinjector;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ class CheckInstalled extends SwingWorker<List<PackageFileList>, Void>
 		this.saveInstalled = saveInstalled;
 	}
 
-	@Override
+	
 	    public List<PackageFileList> doInBackground() throws java.lang.InterruptedException,
 	    java.util.concurrent.ExecutionException,
 	    java.io.IOException {
@@ -130,7 +130,7 @@ class CheckInstalled extends SwingWorker<List<PackageFileList>, Void>
 	}
 
 
-	@Override
+	
 	    public void done() {
 		try {
 			List<PackageFileList> list = get();

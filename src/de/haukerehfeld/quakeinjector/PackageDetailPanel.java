@@ -58,7 +58,7 @@ import javax.swing.event.HyperlinkEvent;
 
 import edu.stanford.ejalbert.BrowserLauncher;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 import java.util.concurrent.Future;
 
 import de.haukerehfeld.quakeinjector.gui.ScrollablePanel;
@@ -160,7 +160,7 @@ class PackageDetailPanel extends JPanel implements ChangeListener,
 		description = new JEditorPane("text/html", "");
 		description.setEditable(false);
 		description.addHyperlinkListener(new HyperlinkListener() {
-				@Override public void hyperlinkUpdate(HyperlinkEvent e) {
+				 public void hyperlinkUpdate(HyperlinkEvent e) {
 					if (launcher != null && e.getEventType().equals(HyperlinkEvent.EventType.ACTIVATED)) {
 						java.net.URL url = e.getURL();
 						if (url != null) {
@@ -275,7 +275,7 @@ class PackageDetailPanel extends JPanel implements ChangeListener,
 		new SwingWorker<ImageIcon,Void>() {
 			private final String url = supposedImageUrl;
 			
-			@Override
+			
 			public ImageIcon doInBackground() {
 				try {
 					return new ImageIcon(new URL(url), current.getId());
@@ -284,7 +284,7 @@ class PackageDetailPanel extends JPanel implements ChangeListener,
 				}
 				return null;
 			}
-			@Override
+			
 			public void done() {
 				//threading: is the image still valid?
 				if (isCancelled() || !supposedImageUrl.equals(url)) {
@@ -343,7 +343,7 @@ class PackageDetailPanel extends JPanel implements ChangeListener,
 		return "<p>Requires: " + Utils.join(links, ", ") + ".</p>";
 	}
 
-	@Override
+	
 	public void selectionChanged(Package map) {
 		this.current = map;
 
@@ -351,7 +351,7 @@ class PackageDetailPanel extends JPanel implements ChangeListener,
 
 	}
 	
-	@Override
+	
 	public void stateChanged(ChangeEvent e) {
 		System.out.println("StateChanged()");
 		refreshUi();

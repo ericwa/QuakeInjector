@@ -23,7 +23,7 @@ package de.haukerehfeld.quakeinjector;
 import java.io.InputStream;
 import java.util.List;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 
 /**
  * Parse database xml and set database in background
@@ -36,7 +36,7 @@ public class PackageDatabaseParserWorker extends SwingWorker<List<Requirement>, 
 		this.databaseUrl = databaseUrl;
 	}
 	
-	@Override
+	
 	public List<Requirement> doInBackground() throws java.io.IOException, org.xml.sax.SAXException {
 		InputStream dl = getDownloadStream(this.databaseUrl);
 		
@@ -47,7 +47,7 @@ public class PackageDatabaseParserWorker extends SwingWorker<List<Requirement>, 
 	}
 
 
-	@Override
+	
 	public void done() {
 	}
 

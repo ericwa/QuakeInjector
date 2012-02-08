@@ -46,17 +46,17 @@ public class Configuration {
 			return new File(unzipdir);
 		}
 	}
-	public final EnginePath EnginePath = new EnginePath();
+	public final EnginePath enginePath = new EnginePath();
 
 	public class EngineExecutable extends FileValue {
 		private EngineExecutable() { super("engineExecutable", new File("")); }
 	}
-	public final EngineExecutable EngineExecutable = new EngineExecutable();
+	public final EngineExecutable engineExecutable = new EngineExecutable();
 
 	public class LocalDatabaseFile extends FileValue {
 		private LocalDatabaseFile() { super("localDatabaseFile", new File(QuakeInjector.appDataDirectory(), "database.xml")); }
 	}
-	public final LocalDatabaseFile LocalDatabaseFile = new LocalDatabaseFile();
+	public final LocalDatabaseFile localDatabaseFile = new LocalDatabaseFile();
 	
 	public class DownloadPath extends FileValue {
 		private DownloadPath() { super("downloadPath", null); }
@@ -70,10 +70,10 @@ public class Configuration {
 		}
 
 		private File defaultPath() {
-			if (EnginePath.get() == null) {
+			if (enginePath.get() == null) {
 				return null;
 			}
-			return new File(EnginePath.get() + File.separator + "downloads");
+			return new File(enginePath.get() + File.separator + "downloads");
 		}
 
 		public void set(File v) {
@@ -86,30 +86,30 @@ public class Configuration {
 			super.set(v);
 		}
 	}
-	public final DownloadPath DownloadPath = new DownloadPath();
+	public final DownloadPath downloadPath = new DownloadPath();
 
 	public class EngineCommandLine extends StringValue {
 		private EngineCommandLine() { super("engineCommandline", ""); }
 	}
-	public final EngineCommandLine EngineCommandLine = new EngineCommandLine();
+	public final EngineCommandLine engineCommandLine = new EngineCommandLine();
 
 	public class RepositoryDatabasePath extends StringValue {
 		private RepositoryDatabasePath() { super("repositoryDatabase",
 				"http://www.quaddicted.com/reviews/quaddicted_database.xml"); }
 	}
-	public final RepositoryDatabasePath RepositoryDatabasePath = new RepositoryDatabasePath();
+	public final RepositoryDatabasePath repositoryDatabasePath = new RepositoryDatabasePath();
 
 	public class ZipContentsDatabaseUrl extends StringValue {
 		private ZipContentsDatabaseUrl() { super("ZipContentsDatabaseUrl",
 				"http://haukerehfeld.de/projects/quakeinjector/temp/zipContents.xml"); }
 	}
-	public final ZipContentsDatabaseUrl ZipContentsDatabaseUrl = new ZipContentsDatabaseUrl();
+	public final ZipContentsDatabaseUrl zipContentsDatabaseUrl = new ZipContentsDatabaseUrl();
 	
 
 	public class RogueInstalled extends BooleanValue {
 		private RogueInstalled() { super("rogueInstalled", false); }
 	}
-	public final RogueInstalled RogueInstalled = new RogueInstalled();
+	public final RogueInstalled rogueInstalled = new RogueInstalled();
 
 	public class OfflineMode extends BooleanValue {
 		private ChangeListenerList listeners = new ChangeListenerList();
@@ -120,38 +120,38 @@ public class Configuration {
 			listeners.addChangeListener(l);
 		}
 
-		@Override
+		
 		public void set(Boolean b) {
 			super.set(b);
 			listeners.notifyChangeListeners(this);
 		}
 	}
-	public final OfflineMode OfflineMode = new OfflineMode();
+	public final OfflineMode offlineMode = new OfflineMode();
 
 	public class HipnoticInstalled extends BooleanValue {
 		private HipnoticInstalled() { super("hipnoticInstalled", false); }
 	}
-	public final HipnoticInstalled HipnoticInstalled = new HipnoticInstalled();
+	public final HipnoticInstalled hipnoticInstalled = new HipnoticInstalled();
 
 	public class MainWindowPositionX extends IntegerValue {
 		private MainWindowPositionX() { super("mainWindowPositionX", null); }
 	}
-	public final MainWindowPositionX MainWindowPositionX = new MainWindowPositionX();
+	public final MainWindowPositionX mainWindowPositionX = new MainWindowPositionX();
 
 	public class MainWindowPositionY extends IntegerValue {
 		private MainWindowPositionY() { super("mainWindowPositionY", null); }
 	}
-	public final MainWindowPositionY MainWindowPositionY = new MainWindowPositionY();
+	public final MainWindowPositionY mainWindowPositionY = new MainWindowPositionY();
 
 	public class MainWindowWidth extends IntegerValue {
 		private MainWindowWidth() { super("mainWindowWidth", null); }
 	}
-	public final MainWindowWidth MainWindowWidth = new MainWindowWidth();
+	public final MainWindowWidth mainWindowWidth = new MainWindowWidth();
 
 	public class MainWindowHeight extends IntegerValue {
 		private MainWindowHeight() { super("mainWindowHeight", null); }
 	}
-	public final MainWindowHeight MainWindowHeight = new MainWindowHeight();
+	public final MainWindowHeight mainWindowHeight = new MainWindowHeight();
 
 	public class RepositoryBasePath extends StringValue {
 		private final static String onlineRepositoryExtension = ".zip";
@@ -165,7 +165,7 @@ public class Configuration {
 			return get() + mapid + onlineRepositoryExtension;
 		}
 	}
-	public final RepositoryBasePath RepositoryBasePath = new RepositoryBasePath();
+	public final RepositoryBasePath repositoryBasePath = new RepositoryBasePath();
 
 	public final Map<String,Value<?>> All = new HashMap<String,Value<?>>();
 	

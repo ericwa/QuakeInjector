@@ -46,7 +46,7 @@ class PackageListSelectionHandler implements ListSelectionListener {
 	/**
 	 * Listen on selection changes
 	 */
-	@Override
+	
 	public void valueChanged(ListSelectionEvent e) { 
 		ListSelectionModel lsm = (ListSelectionModel) e.getSource();
 

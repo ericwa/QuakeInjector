@@ -34,7 +34,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -425,7 +425,7 @@ class PackageInteractionPanel extends JPanel implements ChangeListener,
 
 		installer.uninstall(files,
 		                    new Installer.UninstallErrorHandler() {
-								@Override
+								
 								public void success() {
 									installQueue.finished(progressListener, "success");
 
@@ -435,7 +435,7 @@ class PackageInteractionPanel extends JPanel implements ChangeListener,
 									
 									SwingWorker<Void,Void> saveInstalled
 									    = new SwingWorker<Void,Void>() {
-										@Override
+										
 										public Void doInBackground() {
 											
 											try {
@@ -452,7 +452,7 @@ class PackageInteractionPanel extends JPanel implements ChangeListener,
 									refreshUi();
 								}
 
-								@Override
+								
 								public void error(Exception e) {
 									refreshUi();
 									installQueue.finished(progressListener, "fail");
@@ -554,12 +554,12 @@ class PackageInteractionPanel extends JPanel implements ChangeListener,
 		startmaps.setEnabled(false);
 	}
 
-	@Override
+	
 	public void stateChanged(ChangeEvent e) {
 		refreshUi();
 	}
 
-	@Override
+	
 	public void selectionChanged(Package s) {
 		setSelection(s);
 	}

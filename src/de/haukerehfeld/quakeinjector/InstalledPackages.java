@@ -30,7 +30,7 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 
 public class InstalledPackages {
 	private Future<List<PackageFileList>> installedPackages;
@@ -90,7 +90,7 @@ public class InstalledPackages {
 			this.xml = xml;
 		}
 		
-		@Override
+		
 		public List<PackageFileList> doInBackground() throws FileNotFoundException, IOException {
 			return parseInstalledPackagesFile(xml);
 		}

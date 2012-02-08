@@ -25,7 +25,7 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Collections;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 
 import de.haukerehfeld.quakeinjector.PackageFileList;
 import de.haukerehfeld.quakeinjector.InstalledPackageList;

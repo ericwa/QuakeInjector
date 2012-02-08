@@ -234,20 +234,20 @@ public class EngineConfigDialog extends JDialog {
 		
 
 		class EnableOkay implements ChangeListener, DocumentListener {
-			@Override
+			
 			public void changedUpdate(DocumentEvent e) {
 				check();
 			}
-			@Override
+			
 			public void insertUpdate(DocumentEvent e) {
 				check();
 			}
-			@Override
+			
 			public void removeUpdate(DocumentEvent e) {
 				check();
 			}
 
-			@Override
+			
 			public void stateChanged(ChangeEvent e) {
 				check();
 			}

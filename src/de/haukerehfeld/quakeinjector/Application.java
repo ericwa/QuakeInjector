@@ -41,7 +41,6 @@ public class Application {
 		
 		return exe != null
 			&& !exe.isDirectory()
-			&& exe.canRead()
-			&& exe.canExecute();
+			&& exe.canRead();
 	}
 }

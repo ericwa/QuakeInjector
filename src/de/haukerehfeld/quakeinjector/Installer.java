@@ -39,7 +39,7 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 import javax.swing.SwingUtilities;
 
 public class Installer {
@@ -135,7 +135,7 @@ public class Installer {
 
 		//wait until finished and set finished status
 		new SwingWorker<Void,Void>() {
-			@Override
+			
 			    public Void doInBackground() {
 				try {
 					uninstall.get();
@@ -202,7 +202,7 @@ public class Installer {
 			this.downloadProgressListener = downloadProgressListener;
 		}
 
-		@Override
+		
 		    public Void doInBackground() {
 			try {
 				final File downloadFile = new File(downloadDirectory.get().getAbsolutePath() + File.separator + map.getId() + ".zip");
@@ -368,7 +368,7 @@ public class Installer {
 			cancel(true);
 		}
 
-		@Override
+		
 		    public void done() {
 			PackageFileList files;
 			if (installer != null) {

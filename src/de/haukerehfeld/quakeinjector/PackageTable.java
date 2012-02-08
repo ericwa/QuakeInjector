@@ -93,7 +93,6 @@ public class PackageTable extends JTable {
         return (row % 2 == 0) ? NORMALROWCOLOR : ALTERNATINGROWCOLOR;
     }
 
-	@Override
 	@SuppressWarnings("unchecked")
 	public TableRowSorter<PackageListModel> getRowSorter() {
 		return (TableRowSorter<PackageListModel>) super.getRowSorter();

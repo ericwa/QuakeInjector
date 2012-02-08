@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 
 /**
  * Inspect a zipfile and gather all zipentries
@@ -40,7 +40,7 @@ public class InspectZipWorker extends SwingWorker<List<ZipEntry>, Void> {
 		this.input = input;
 	}
 
-	@Override
+	
 	public List<ZipEntry> doInBackground() throws IOException,
 	    FileNotFoundException {
 		ZipInputStream zis = new ZipInputStream(new BufferedInputStream(input));

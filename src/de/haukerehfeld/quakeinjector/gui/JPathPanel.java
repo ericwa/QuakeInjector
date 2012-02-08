@@ -319,7 +319,7 @@ public class JPathPanel extends JPanel {
 	}
 
 	/**
-	 * Hack: Because i can't call verify() from the inner class that has @Override verify(Stuff s);
+	 * Hack: Because i can't call verify() from the inner class that has  verify(Stuff s);
 	 */
 	private boolean verify_() {
 		System.out.println("verify called");
@@ -356,23 +356,23 @@ public class JPathPanel extends JPanel {
 
 
 	private class PathVerifier extends InputVerifier implements DocumentListener {
-		@Override
+		
 		public void insertUpdate(DocumentEvent e) {
 			verify_();
 		}
-		@Override
+		
 		public void removeUpdate(DocumentEvent e) {
 			verify_();
 		}
-		@Override
+		
 		public void changedUpdate(DocumentEvent e) {
 			verify_();
 		}
-		@Override
+		
 		public boolean verify(JComponent input) {
 			return verify_();
 		}
-		@Override
+		
 		public boolean shouldYieldFocus(JComponent input) {
 			verify_();
 			return true;

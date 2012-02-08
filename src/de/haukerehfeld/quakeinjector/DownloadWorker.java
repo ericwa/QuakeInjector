@@ -33,7 +33,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 
 /**
  * Install maps in a worker thread
@@ -51,7 +51,7 @@ public class DownloadWorker extends SwingWorker<Long, Void> implements ProgressL
 		this.out = out;
 	}
 
-	@Override
+	
 	public Long doInBackground() throws
 	    IOException,
 	    FileNotFoundException,

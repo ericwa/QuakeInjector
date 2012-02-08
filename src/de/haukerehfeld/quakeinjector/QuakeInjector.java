@@ -57,7 +57,7 @@ import javax.swing.JScrollPane;
 import javax.swing.JSplitPane;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import javax.swing.event.DocumentEvent;
@@ -126,7 +126,7 @@ public class QuakeInjector extends JFrame {
 
 		//load config
 		final Future<Configuration> config = new SwingWorker<Configuration,Void>() {
-			@Override public Configuration doInBackground() { return new Configuration(configFile); }
+			 public Configuration doInBackground() { return new Configuration(configFile); }
 		};
 		((SwingWorker<?,?>) config).execute();
 
@@ -167,7 +167,7 @@ public class QuakeInjector extends JFrame {
 		}
 		this.config = cfg;
 
-		this.offline = cfg.OfflineMode;
+		this.offline = cfg.offlineMode;
 
 		//config needed here
 		setWindowSize();
@@ -217,12 +217,12 @@ public class QuakeInjector extends JFrame {
 	private void setWindowSize() {
 		Configuration c = getConfig();
 
-		if (c.MainWindowWidth.exists() && c.MainWindowHeight.exists()) {
-			int width = c.MainWindowWidth.get();
-			int height = c.MainWindowHeight.get();
-			if (c.MainWindowPositionX.exists() && c.MainWindowPositionY.exists()) {
-				int posX = c.MainWindowPositionX.get();
-				int posY = c.MainWindowPositionY.get();
+		if (c.mainWindowWidth.exists() && c.mainWindowHeight.exists()) {
+			int width = c.mainWindowWidth.get();
+			int height = c.mainWindowHeight.get();
+			if (c.mainWindowPositionX.exists() && c.mainWindowPositionY.exists()) {
+				int posX = c.mainWindowPositionX.get();
+				int posY = c.mainWindowPositionY.get();
 				// System.out.println("Setting window bounds: "
 				//                    + posX + ", "
 				//                    + posY + ", "
@@ -250,21 +250,21 @@ public class QuakeInjector extends JFrame {
 
 		final Future<Void> requirementsListUpdater = parseDatabaseAndSetList();
 
-		Configuration.EnginePath enginePath = getConfig().EnginePath;
+		Configuration.EnginePath enginePath = getConfig().enginePath;
 		File engineExe = new File("");
-		if (getConfig().EngineExecutable.existsOrDefault()) {
+		if (getConfig().engineExecutable.existsOrDefault()) {
 			engineExe = new File(enginePath.get()
 			                          + File.separator
-			                          + getConfig().EngineExecutable);
+			                          + getConfig().engineExecutable);
 		}
 		starter = new EngineStarter(enginePath.get(),
 		                            engineExe,
-		                            getConfig().EngineCommandLine);
+		                            getConfig().engineCommandLine);
 		installer = new Installer(enginePath,
-		                          getConfig().DownloadPath);
+		                          getConfig().downloadPath);
 
 		interactionPanel.init(installer,
-		                      getConfig().RepositoryBasePath,
+		                      getConfig().repositoryBasePath,
 		                      maps,
 		                      starter,
 		                      new SaveInstalled(installedMapsFile)
@@ -273,7 +273,7 @@ public class QuakeInjector extends JFrame {
 		if (!installer.checkInstallDirectory()) {
 			//wait until database was loaded, then pop up config
 			new SwingWorker<Void,Void>() {
-				@Override
+				
 			    public Void doInBackground() {
 					try {
 						requirementsListUpdater.get();
@@ -282,7 +282,7 @@ public class QuakeInjector extends JFrame {
 					catch (java.util.concurrent.ExecutionException e) {}
 					return null;
 				}
-				@Override
+				
 			    public void done() {
 					enginePathNotSetDialogue();
 				}
@@ -328,7 +328,7 @@ public class QuakeInjector extends JFrame {
 	 */
 	private Future<List<Requirement>> doParseDatabase() {
 		
-		final String databaseUrl = getConfig().RepositoryDatabasePath.get();
+		final String databaseUrl = getConfig().repositoryDatabasePath.get();
 		
 		final SwingWorker<List<Requirement>, Void> dbParse
 		    = new SwingWorker<List<Requirement>,Void>() {
@@ -339,9 +339,9 @@ public class QuakeInjector extends JFrame {
 			/** the stream to the temporary file */
 			private FileOutputStream cacheStream;
 			
-			@Override
+			
 			public List<Requirement> doInBackground() throws IOException, org.xml.sax.SAXException {
-				cache = getConfig().LocalDatabaseFile.get();
+				cache = getConfig().localDatabaseFile.get();
 				cache = cache.getAbsoluteFile();
 				InputStream db;
 				try {
@@ -366,7 +366,7 @@ public class QuakeInjector extends JFrame {
 				return parseDatabase(db);
 			}
 
-			@Override
+			
 			public void done() {
 				try {
 					cacheStream.close();
@@ -393,7 +393,7 @@ public class QuakeInjector extends JFrame {
 		                      QuakeInjector.this);
 
 		dbParse.addPropertyChangeListener(new PropertyChangeListener() {
-				@Override
+				
 				public void propertyChange(PropertyChangeEvent evt) {
 					if (evt.getPropertyName() == "progress") {
 						int p = (Integer) evt.getNewValue();
@@ -418,14 +418,14 @@ public class QuakeInjector extends JFrame {
 	 * See what maps are installed
 	 */
 	private Future<List<PackageFileList>> checkForInstalledMaps() {
-		final File enginePath = getConfig().EnginePath.get();
+		final File enginePath = getConfig().enginePath.get();
 
 		final File file = new File(appDataDirectory(), zipFilesXml);
 
 		final CheckInstalled checker
 		    = new CheckInstalled(this,
-		                         getConfig().ZipContentsDatabaseUrl.get(),
-		                         getConfig().EnginePath.get().toString(),
+		                         getConfig().zipContentsDatabaseUrl.get(),
+		                         getConfig().enginePath.get().toString(),
 		                         maps,
 		        saveInstalled);
 
@@ -440,7 +440,7 @@ public class QuakeInjector extends JFrame {
 		                      QuakeInjector.this);
 
 		checker.addPropertyChangeListener(new PropertyChangeListener() {
-				@Override
+				
 				public void propertyChange(PropertyChangeEvent evt) {
 					if (evt.getPropertyName() == "progress") {
 						int p = (Integer) evt.getNewValue();
@@ -480,7 +480,7 @@ public class QuakeInjector extends JFrame {
 		final Future<List<Requirement>> dbParse = doParseDatabase();
 
 		SwingWorker<Void,Void> waitForInstalledMapsAndDb = new SwingWorker<Void,Void>() {
-			@Override public Void doInBackground() throws Exception {
+			 public Void doInBackground() throws Exception {
 				//just wait
 				installedMaps.get();
 				dbParse.get();
@@ -552,10 +552,10 @@ public class QuakeInjector extends JFrame {
 	private void showEngineConfig(boolean rogueInstalled, boolean hipnoticInstalled) {
 		final EngineConfigDialog d
 		    = new EngineConfigDialog(QuakeInjector.this,
-		                             getConfig().EnginePath,
-		                             getConfig().EngineExecutable,
-		                             getConfig().DownloadPath,
-		                             getConfig().EngineCommandLine,
+		                             getConfig().enginePath,
+		                             getConfig().engineExecutable,
+		                             getConfig().downloadPath,
+		                             getConfig().engineCommandLine,
 		                             rogueInstalled,
 		                             hipnoticInstalled
 		        );
@@ -600,13 +600,13 @@ public class QuakeInjector extends JFrame {
 		
 
 		Configuration c = getConfig();
-		c.EnginePath.set(enginePath);
-		c.EngineExecutable.set(RelativePath.getRelativePath(enginePath, engineExecutable));
-		c.EngineCommandLine.set(commandline);
+		c.enginePath.set(enginePath);
+		c.engineExecutable.set(RelativePath.getRelativePath(enginePath, engineExecutable));
+		c.engineCommandLine.set(commandline);
 
-		c.DownloadPath.set(downloadPath);
+		c.downloadPath.set(downloadPath);
 
-		setEngineConfig(enginePath, engineExecutable, getConfig().EngineCommandLine, rogueInstalled, hipnoticInstalled);
+		setEngineConfig(enginePath, engineExecutable, getConfig().engineCommandLine, rogueInstalled, hipnoticInstalled);
 
 
 		try {
@@ -616,7 +616,7 @@ public class QuakeInjector extends JFrame {
 			File dir = configFile.getAbsoluteFile().getParentFile();
 			System.out.println("Trying to set directory (" + dir + ") writable..");
 			try {
-				dir.setWritable(true);
+				//dir.setWritable(true);
 			}
 			catch (SecurityException securityError) {
 				System.out.println("Couldn't set writable: " + securityError);
@@ -850,7 +850,7 @@ public class QuakeInjector extends JFrame {
 
 	private class QuakeInjectorWindowListener extends WindowAdapter
 	{
-		@Override
+		
 		public void windowClosing(WindowEvent e) {
 			if (installer.working()) {
 				String msg = "There are maps left in the install queue. Wait until they are finished installing?";
@@ -877,15 +877,15 @@ public class QuakeInjector extends JFrame {
 			}
 			windowClosed(e);
 		}
-		@Override
+		
 		public void windowClosed(WindowEvent e)
 		{
 			Configuration config = getConfig();
 			Rectangle bounds = QuakeInjector.this.getBounds();
-			config.MainWindowPositionX.set((int) bounds.getX());
-			config.MainWindowPositionY.set((int) bounds.getY());
-			config.MainWindowWidth.set((int) bounds.getWidth());
-			config.MainWindowHeight.set((int) bounds.getHeight());
+			config.mainWindowPositionX.set((int) bounds.getX());
+			config.mainWindowPositionY.set((int) bounds.getY());
+			config.mainWindowWidth.set((int) bounds.getWidth());
+			config.mainWindowHeight.set((int) bounds.getHeight());
 
 			try {
 				config.write();

@@ -31,7 +31,7 @@ import java.util.Map;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 
 /**
  * Install maps in a worker thread
@@ -75,7 +75,7 @@ public class InstallWorker extends SwingWorker<PackageFileList, Void> implements
 		this.overwrites = overwrites;
 	}
 
-	@Override
+	
 	public PackageFileList doInBackground() throws IOException,
 	    FileNotFoundException,
 	    Installer.CancelledException {

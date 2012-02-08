@@ -5,7 +5,7 @@ import java.io.FileInputStream;
 import java.io.BufferedInputStream;
 import java.util.Iterator;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 
 
 /**
@@ -21,7 +21,7 @@ public class UninstallWorker extends SwingWorker<Void, Void> {
 		this.baseDirectory = baseDirectory;
 	}
 
-	@Override
+	
 	public Void doInBackground() {
 		uninstall(files);
 		return null;
@@ -71,7 +71,7 @@ public class UninstallWorker extends SwingWorker<Void, Void> {
 		}
 	}
 
-	@Override
+	
     public void done() {
 	}
 }

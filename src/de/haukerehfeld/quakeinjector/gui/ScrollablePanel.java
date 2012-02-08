@@ -57,7 +57,7 @@ import javax.swing.event.HyperlinkEvent;
 
 import edu.stanford.ejalbert.BrowserLauncher;
 
-import javax.swing.SwingWorker;
+import org.jdesktop.swingworker.SwingWorker;
 import java.util.concurrent.Future;
 
 /**
@@ -89,28 +89,23 @@ public class ScrollablePanel extends JPanel implements Scrollable {
 	}
 	
 
-	@Override
 	public Dimension getPreferredScrollableViewportSize() {
 		return getPreferredSize();
 	}
 
-	@Override
 	public int getScrollableUnitIncrement(Rectangle visibleRect,
 	                                      int orientation,
 	                                      int direction) {
 		return scrollUnitIncrement;
 	}
 
-	@Override
 	public int getScrollableBlockIncrement(Rectangle visibleRect,
 	                                       int orientation,
 	                                       int direction) {
 		return scrollBlockincrement;
 	}
 
-	@Override
 	public boolean getScrollableTracksViewportWidth() { return tracksWidth; }
-	@Override
 	public boolean getScrollableTracksViewportHeight() { return tracksHeight; }
 }
 

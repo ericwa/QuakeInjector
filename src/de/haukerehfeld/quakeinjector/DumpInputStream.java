@@ -38,19 +38,19 @@ public class DumpInputStream extends InputStream {
 		this.out = out;
 	}
 
-	@Override
+	
 	public int read() throws IOException {
 		int r = in.read();
 		out.write(r);
 		return r;
 	}
 
-	@Override
+	
 	public int read(byte[] b) throws IOException {
 		return read(b, 0, b.length);
 	}
 	
-	@Override
+	
 	public int read(byte[] b, int off, int len) throws IOException {
 		int readcount = in.read(b, off, len);
 
@@ -60,25 +60,25 @@ public class DumpInputStream extends InputStream {
 		return readcount;
 	}
 
-	@Override
+	
 	public long skip(long n) throws IOException	{
 		return in.skip(n);
 	}
 
-	@Override
+	
 	public int available() throws IOException {
 		return in.available();
 	}
 
-	@Override
+	
 	public void mark(int readlimit) {}
 
-	@Override
+	
 	public void reset() throws IOException {
 		throw new IOException("Reset not supported");
 	}
 
-	@Override
+	
 	public boolean markSupported() {
 		return false;
 	}

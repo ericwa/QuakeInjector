@@ -98,13 +98,11 @@ public class Package extends SortableRequirement implements Requirement {
 		this.requirements = requirements;
 	}
 	
-	@Override
 	public void addChangeListener(ChangeListener l) {
 		listeners.addChangeListener(l);
 	}
 
 
-	@Override
 	public void removeChangeListener(ChangeListener l) {
 		listeners.removeChangeListener(l);
 	}
@@ -188,12 +186,12 @@ public class Package extends SortableRequirement implements Requirement {
 		return unmet;
 	}
 
-	@Override
+	
 	protected void notifyChangeListeners() {
 		listeners.notifyChangeListeners(this);
 	}
 
-	@Override
+	
 	public String toString() {
 		return getId() + " (" + isInstalled() + ")";
 	}

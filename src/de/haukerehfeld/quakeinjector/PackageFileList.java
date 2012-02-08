@@ -67,21 +67,21 @@ public class PackageFileList implements Iterable<FileInfo>, Comparable<PackageFi
 		return id;
 	}
 
-	@Override public int compareTo(PackageFileList o) {
+	 public int compareTo(PackageFileList o) {
 		return -(o.id.compareTo(id));
 	}
-	@Override public boolean equals(Object o) {
+	 public boolean equals(Object o) {
 		if (!(o instanceof PackageFileList)) {
 			return false;
 		}
 		return ((PackageFileList) o).id.equals(id);
 	}
-	@Override public int hashCode() {
+	 public int hashCode() {
 		return id.hashCode();
 	}
 	
 
-	@Override public String toString() {
+	 public String toString() {
 		return id + "[" + files.toString() + "]";
 	}
 }
